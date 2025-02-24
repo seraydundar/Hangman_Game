@@ -21,7 +21,7 @@ def home(request):
 
 
 def login_view(request):
-    # Eğer kullanıcı zaten oturum açmışsa (örneğin admin), önce çıkış yapalım.
+    # Eğer kullanıcı zaten oturum açmışsa , önce çıkış yapalım.
     if request.user.is_authenticated:
         logout(request)
     if request.method == 'POST':
