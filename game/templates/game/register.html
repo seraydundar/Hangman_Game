@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Kayıt Ol</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      background: linear-gradient(to bottom, #a7c7e7, #ffffff); /* Mavi tonlarında degrade */
+    }
+    h1 {
+      font-weight: bold;
+    }
+    /* Logo bölümü */
+    .logo {
+      margin: 20px auto;
+      width: 120px;
+    }
+    .logo img {
+      width: 100%;
+      background: transparent;
+    }
+    form {
+      margin: 20px auto;
+      max-width: 300px;
+      text-align: left;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 8px 20px;
+      background: #1c6ea4;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #155a83;
+    }
+    a {
+      text-decoration: none;
+      color: #4285f4;
+      font-size: 16px;
+      margin: 10px;
+    }
+    /* Footer (Projeyi yapanlar) */
+    .footer-signature {
+      position: fixed;
+      right: 10px;
+      bottom: 10px;
+      text-align: right;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #0e0d0d;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kayıt Ol</h1>
+  
+  <!-- Logo: Başlığın hemen altında -->
+  <div class="logo">
+    <img src="{% static 'game/images/logo.png' %}" alt="Logo">
+  </div>
+  
+  <form method="post">
+    {% csrf_token %}
+    <label for="username">Kullanıcı Adı:</label>
+    <input type="text" id="username" name="username" required>
+    
+    <label for="email">E-posta:</label>
+    <input type="email" id="email" name="email" required>
+    
+    <label for="password">Şifre:</label>
+    <input type="password" id="password" name="password" required>
+    
+    <button type="submit">Kayıt Ol</button>
+  </form>
+  
+  <p><a href="{% url 'login' %}">Zaten hesabınız var mı? Giriş Yapın</a></p>
+  
+  <div class="footer-signature">
+    <p>Projeyi yapanlar :</p>
+    <p>Zeyd Oğuzhan Dikbudak</p>
+    <p>İlkgül Seray Dündar</p>
+  </div>
+</body>
+</html>

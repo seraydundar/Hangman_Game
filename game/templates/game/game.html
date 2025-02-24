@@ -1,0 +1,390 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Adam Asmaca Oyunu</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Genel gövde ayarları */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0 auto;
+            padding: 0;
+            max-width: 900px;
+            text-align: center;
+            background: linear-gradient(to bottom, #e0f2ff, #ffffff);
+        }
+
+        /* Üst başlık */
+        header {
+            background: linear-gradient(90deg, #3b85b6, #bbcfda);
+            color: #fff;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        header .left-title {
+            margin-left: 20px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        /* Logo */
+        header .logo {
+            margin-right: 20px;
+        }
+        header .logo img {
+            height: 60px; /* Logo boyutu */
+        }
+
+        /* Navbar */
+        nav {
+            margin-top: 10px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* İçerik konteyneri */
+        .container {
+            background: #ffffff;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* Mesaj stili */
+        .status-message {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        /* Tuval (Adam Asmaca çizimi) */
+        canvas {
+            border: 1px solid #000;
+            margin-top: 20px;
+            background: #fafafa;
+        }
+
+        /* Harfler */
+        .letter {
+            display: inline-block;
+            width: 20px;
+            text-align: center;
+            font-size: 24px;
+            margin: 0 2px;
+        }
+        .space {
+            display: inline-block;
+            width: 20px;
+        }
+
+        /* Form */
+        form {
+            margin: 20px auto;
+            max-width: 300px;
+            text-align: left;
+        }
+        form div {
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 180px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 100px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 8px 20px;
+            background: #1c6ea4;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #155a83;
+        }
+
+        /* Alt bilgi (footer) */
+        footer {
+            margin: 30px 0;
+            color: #666;
+        }
+
+        /* Puan Tablosu (Scoreboard) - Panel Stili */
+        .scoreboard-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 10px 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .scoreboard-panel h2 {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            color: #1c6ea4;
+        }
+        .scoreboard-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .scoreboard-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .scoreboard-list li:last-child {
+            border-bottom: none;
+        }
+
+        
+        .rank {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #333;
+        }
+
+        
+        .username {
+            flex: 1;
+            text-align: left;
+        }
+        .user-score {
+            color: #1c6ea4;
+            font-weight: bold;
+        }
+
+        .alert-messages {
+    margin: 10px auto;
+    padding: 10px;
+    max-width: 600px;
+    text-align: center;
+                        }
+        .alert {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+                         }
+        .alert.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+                         }
+         .alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+                        }
+ 
+
+        
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Sol kısım: Başlık -->
+        <div class="left-title">
+            <h1>Adam Asmaca Oyunu</h1>
+            <nav>
+                <span style="font-weight: bold; margin-right: 10px;">
+                    Hoş geldin, {{ user.username }}!
+                </span>
+            </nav>
+        </div>
+        <!-- Sağ kısım: Logo -->
+        <div class="logo">
+            <img src="{% static 'game/images/logo.png' %}" alt="Logo">
+
+        </div>
+    </header>
+
+    <!-- Sabit Scoreboard Paneli -->
+    <div class="scoreboard-panel">
+        <h2>Puan Tablosu</h2>
+        <ul class="scoreboard-list">
+            {% for point in points %}
+            <li>
+                <span class="rank">{{ forloop.counter }}.</span>
+                <span class="username">{{ point.user.username }}</span>
+                <span class="user-score">{{ point.score }}</span>
+            </li>
+            {% empty %}
+            <li>Henüz puan kaydı yok.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="container">
+        {% if messages %}
+          <div class="alert-messages">
+            {% for msg in messages %}
+              <p class="alert {{ msg.tags }}">{{ msg }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+    
+        {% if error %}
+          <div class="status-message text-danger">
+            {{ error }}
+          </div>
+        {% endif %}
+        {% if message %}
+          <div class="status-message">
+            {{ message }}
+          </div>
+        {% endif %}
+    
+        <p>
+          {% for letter in secret_word %}
+            {% if letter == " " %}
+              <span class="space">&nbsp;&nbsp;&nbsp;</span>
+            {% elif letter in correct_guesses %}
+              <span class="letter">{{ letter }}</span>
+            {% else %}
+              <span class="letter">_</span>
+            {% endif %}
+          {% endfor %}
+        </p>
+    </div>
+    
+
+        <form method="post">
+            {% csrf_token %}
+            <div>
+                <label for="guess">Tek harf tahmin et:</label>
+                <input type="text" id="guess" name="guess" maxlength="1">
+            </div>
+            <div>
+                <label for="full_word">Tüm kelimeyi tahmin et:</label>
+                <input type="text" id="full_word" name="full_word">
+            </div>
+            <button type="submit">Tahmin Et</button>
+        </form>
+
+        <!-- İpucu Bilgisi: formun hemen altında -->
+        {% if hint %}
+            <p style="margin-top: 20px;"><strong>İpucu:</strong> {{ hint }}</p>
+        {% endif %}
+
+        <canvas id="hangman" width="300" height="200"></canvas>
+    </div>
+
+    <footer>
+        <p>© 2025 Adam Asmaca Oyunu</p>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('hangman');
+        const ctx = canvas.getContext('2d');
+        function drawGallows() {
+            ctx.strokeStyle = "#000";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(20, canvas.height - 20);
+            ctx.lineTo(100, canvas.height - 20);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(60, canvas.height - 20);
+            ctx.lineTo(60, 20);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(60, 20);
+            ctx.lineTo(150, 20);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(150, 20);
+            ctx.lineTo(150, 40);
+            ctx.stroke();
+        }
+        function drawHead() {
+            ctx.beginPath();
+            ctx.arc(150, 50, 10, 0, Math.PI * 2, true);
+            ctx.stroke();
+        }
+        function drawBody() {
+            ctx.beginPath();
+            ctx.moveTo(150, 60);
+            ctx.lineTo(150, 100);
+            ctx.stroke();
+        }
+        function drawLeftArm() {
+            ctx.beginPath();
+            ctx.moveTo(150, 70);
+            ctx.lineTo(130, 90);
+            ctx.stroke();
+        }
+        function drawRightArm() {
+            ctx.beginPath();
+            ctx.moveTo(150, 70);
+            ctx.lineTo(170, 90);
+            ctx.stroke();
+        }
+        function drawLeftLeg() {
+            ctx.beginPath();
+            ctx.moveTo(150, 100);
+            ctx.lineTo(130, 120);
+            ctx.stroke();
+        }
+        function drawRightLeg() {
+            ctx.beginPath();
+            ctx.moveTo(150, 100);
+            ctx.lineTo(170, 120);
+            ctx.stroke();
+        }
+        const hangmanParts = [drawHead, drawBody, drawLeftArm, drawRightArm, drawLeftLeg, drawRightLeg];
+        drawGallows();
+        const wrongCount = Number("{{ wrong_count|default:'0' }}");
+        for (let i = 0; i < wrongCount; i++) {
+            hangmanParts[i]();
+        }
+    </script>
+
+<style>
+    .footer-signature {
+      position: fixed;
+      right: 10px;
+      bottom: 10px;
+      text-align: right;
+      font-size: 14px; /* İsteğe bağlı boyut */
+      line-height: 1.4; /* Satır aralığı */
+      color: #0e0d0d; /* Yazı rengi */
+      font-style: italic;
+    }
+  </style>
+  
+  <div class="footer-signature">
+    <p>Projeyi yapanlar :</p>
+    <p>Zeyd Oğuzhan Dikbudak</p>
+    <p>İlkgül Seray Dündar</p>
+  </div>
+  
+
+
+
+</body>
+</html>
