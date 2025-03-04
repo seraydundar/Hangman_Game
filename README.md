@@ -1,23 +1,24 @@
-<strong style="color: blue;">Adam Asmaca Oyunu</strong>
+# Adam Asmaca Oyunu
 
-<p>
-Adam Asmaca Oyunu, Django ve PostgreSQL kullanılarak geliştirilmiş, web tabanlı klasik asmaca (hangman) oyunudur. Kullanıcılar kayıt olup giriş yaptıktan sonra, rastgele seçilen kelimeyi tahmin ederek puan kazanırlar. Her doğru tahminde puan +5 artar ve her kelimeye ait ipucu gösterilir.
-</p>
+**Adam Asmaca Oyunu**, Django ve PostgreSQL kullanılarak geliştirilmiş, web tabanlı klasik asmaca (hangman) oyunudur. Kullanıcılar kayıt olup giriş yaptıktan sonra, rastgele seçilen kelimeyi tahmin ederek puan kazanırlar. Her doğru tahminde puan +5 artar ve her kelimeye ait ipucu gösterilir.
 
-<strong style="color: blue;">Özellikler</strong>
+## Özellikler
 
-<p>
-<strong style="color: blue;">Kullanıcı Yönetimi:</strong> Kayıt, giriş, çıkış.
-</p>
+- **Kullanıcı Yönetimi:**
+  - Kayıt, giriş ve çıkış işlemleri.
+- **Oyun Mekaniği:**
+  - Rastgele kelime seçimi.
+  - Harf veya tam kelime tahmini.
+  - İpucu desteği.
+- **Puan Tablosu:**
+  - Kullanıcıların güncel puanlarının sıralı görüntülenmesi.
+- **Modern Arayüz:**
+  - Mavi tonlu tasarım.
+  - Logo ve duyarlı (responsive) görünüm.
 
-<p>
-<strong style="color: blue;">Oyun Mekaniği:</strong> Rastgele kelime seçimi, harf veya tam kelime tahmini, ipucu desteği.
-</p>
+## Teknolojiler
 
-<p>
-<strong style="color: blue;">Puan Tablosu:</strong> Kullanıcıların güncel puanlarının sıralı görüntülenmesi.
-</p>
+- **Backend:** Django
+- **Database:** PostgreSQL
+- **Frontend:** HTML, CSS, JavaScript
 
-<p>
-<strong style="color: blue;">Modern Arayüz:</strong> Mavi tonlu tasarım, logo ve duyarlı görünüm.
-</p>
